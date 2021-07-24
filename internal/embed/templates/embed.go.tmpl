@@ -1,0 +1,23 @@
+package {{.ModuleShort}}
+
+// embed file contains the fs to embed in the final go binary
+// as well as other related files like boxes based on it.
+
+import (
+	"embed"
+
+	"github.com/paganotoni/fsbox"
+)
+
+var (
+	//go:embed app/templates public migrations config
+	fs embed.FS
+
+	// Boxes used by the app, these are based on the embed.FS declared
+	// in the fs variable.
+	Assets     = fsbox.New(fs, "public")
+	Templates  = fsbox.New(fs, "app/templates")
+	Locales    = fsbox.New(fs, "app/locales")
+	Migrations = fsbox.New(fs, "migrations")
+	Config     = fsbox.New(fs, "config")
+)

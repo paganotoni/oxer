@@ -6,6 +6,7 @@ import (
 	"oxer/internal/folders"
 	"oxer/internal/meta"
 	"oxer/internal/modules"
+	"oxer/internal/node"
 	"oxer/internal/refresh"
 	"oxer/internal/templates"
 	"oxer/internal/webpack"
@@ -47,6 +48,9 @@ func main() {
 
 		// Replace routes in webpack.config.js
 		webpack.ReplaceAssetsRoutes,
+
+		// Replace routes in webpack.config.js
+		node.TweakPackageJSON,
 
 		// Replace things in .buffalo.dev.yml
 		refresh.TweakDevYml,

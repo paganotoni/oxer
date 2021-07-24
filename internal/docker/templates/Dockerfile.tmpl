@@ -1,0 +1,31 @@
+FROM golang:1.16-alpine as builder
+
+ENV GO111MODULE on
+ENV GOPROXY https://proxy.golang.org/
+
+# Installing nodejs and build-base
+RUN apk add --no-cache --update nodejs curl bash build-base
+
+# Installing Yarn
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+ENV PATH="$PATH:/root/.yarn/bin:/root/.config/yarn/global/node_modules"
+
+# Installing ox
+RUN go install github.com/wawandco/oxpecker/cmd/ox@latest
+
+WORKDIR /{{.ModuleShort}}
+ADD . .
+# Building the application binary in bin/app 
+RUN ox build --static -o bin/{{.ModuleShort}}
+
+# Building bin/cli with the tooling
+RUN go build -o ./bin/cli ./cmd/ox 
+
+FROM alpine
+
+# Binaries
+COPY --from=builder /{{.ModuleShort}}/bin/* /bin/
+
+# For migrations use 
+# CMD cli db migrate; app 
+CMD cli db migrate up; app

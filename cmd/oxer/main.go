@@ -1,6 +1,7 @@
 package main
 
 import (
+	"oxer/internal/docker"
 	"oxer/internal/embed"
 	"oxer/internal/executables"
 	"oxer/internal/folders"
@@ -56,7 +57,7 @@ func main() {
 		refresh.TweakDevYml,
 
 		// Replacing docker file
-		// docker.ReplaceDockerfile,
+		docker.ReplaceDockerfile,
 
 		modules.FixGoVersion,
 		modules.RunTidy,
